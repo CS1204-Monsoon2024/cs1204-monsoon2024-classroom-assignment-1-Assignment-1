@@ -6,10 +6,43 @@ using namespace std;
 
 // Function to find the median
 double findMedian(int arr1[], int size1, int arr2[], int size2) {
-    
-// Your code here
+    int count[101] = {0}; // Initializes the count array with zeros
 
+    // Update frequency array for arr1
+    for (int i = 0; i < size1; ++i) {
+        count[arr1[i]]++;
+    }
+
+    // Update frequency array for arr2
+    for (int i = 0; i < size2; ++i) {
+        count[arr2[i]]++;
+    }
+
+    int total_students = size1 + size2;
+    int mid = (total_students + 1) / 2;
+    int cumulative_count = 0;
+
+    // Find the median using the frequency array
+    for (int i = 0; i <= 100; ++i) {
+        cumulative_count += count[i];
+        
+        if (cumulative_count >= mid) {
+            // Check for even number of total students to get the average of the two middle elements
+            if (total_students % 2 == 0 && cumulative_count == mid) {
+                for (int j = i + 1; j <= 100; ++j) {
+                    if (count[j] > 0) {
+                        return (i + j) / 2.0; // Return the average of the two middle elements
+                    }
+                }
+            }
+            return i; // The median score for odd number of total students
+        }
+    }
+
+    return -1; // If no median found (should not happen in a valid input)
 }
+
+
 
 
 int main() {
